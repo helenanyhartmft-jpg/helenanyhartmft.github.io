@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Therapy With Helena</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #ffffff;
+      --cream: #f2f6fb;
+      --lavender-light: #e2edf8;
+      --lavender-mid: #93bde0;
+      --lavender: #5a9fd4;
+      --lavender-dark: #1c5f9e;
+      --blue-light: #d8eaf6;
+      --blue-mid: #7eb4d8;
+      --blue: #3585bf;
+      --blue-dark: #0e4a82;
+      --text-dark: #12243a;
+      --text-mid: #3d5570;
+      --text-light: #6a8aa8;
+      --border: #b8d4ec;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      color: var(--text-dark);
+      background: var(--white);
+      font-weight: 300;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--text-dark);
+      text-decoration: none;
+    }
+    .nav-logo span {
+      color: var(--lavender-dark);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text-mid);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--lavender-dark); }
+
+    /* SECTIONS */
+    section {
+      min-height: 100vh;
+      display: none;
+      padding-top: 80px;
+    }
+    section.active { display: block; }
+
+    /* ===== HOME ===== */
+    #home {
+      background: linear-gradient(160deg, var(--blue-light) 0%, var(--lavender-light) 50%, var(--cream) 100%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 2rem 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    #home.active { display: flex; }
+
+    .home-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+    }
+    .blob1 {
+      width: 500px; height: 500px;
+      background: var(--lavender);
+      top: -100px; right: -100px;
+    }
+    .blob2 {
+      width: 400px; height: 400px;
+      background: var(--blue);
+      bottom: -80px; left: -80px;
+    }
+
+    .home-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lavender-dark);
+      background: rgba(155,142,196,0.15);
+      padding: 0.4rem 1.2rem;
+      border-radius: 100px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(155,142,196,0.3);
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .home-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text-dark);
+      max-width: 800px;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    .home-title em {
+      font-style: italic;
+      color: var(--lavender-dark);
+    }
+
+    .home-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-mid);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--lavender-dark);
+      color: white;
+      border: none;
+      padding: 0.85rem 2.2rem;
+      border-radius: 100px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--lavender);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--lavender-dark);
+      border: 1.5px solid var(--lavender-mid);
+      padding: 0.85rem 2.2rem;
+      border-radius: 100px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: var(--lavender-light);
+      transform: translateY(-2px);
+    }
+
+    .home-pills {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 4rem;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    .pill {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.5rem 1.3rem;
+      font-size: 0.8rem;
+      color: var(--text-mid);
+      letter-spacing: 0.05em;
+    }
+
+    /* ===== ABOUT ===== */
+    #about {
+      background: var(--white);
+      padding: 100px 2rem 80px;
+    }
+    #about.active { display: block; }
+
+    .about-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .section-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lavender-dark);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 300;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
+    }
+    .title-line {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--lavender-dark), var(--blue));
+      margin: 1.5rem 0 3rem;
+      border-radius: 2px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--text-mid);
+      margin-bottom: 1.5rem;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .about-card {
+      background: linear-gradient(135deg, var(--lavender-light), var(--blue-light));
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+    }
+    .about-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+    .cred-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-bottom: 1.1rem;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+    .cred-dot {
+      width: 6px; height: 6px;
+      min-width: 6px;
+      border-radius: 50%;
+      background: var(--lavender-dark);
+      margin-top: 0.45rem;
+    }
+    .approach-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .tag {
+      background: rgba(107,94,168,0.12);
+      color: var(--lavender-dark);
+      border: 1px solid rgba(107,94,168,0.2);
+      border-radius: 100px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+    .consult-cta {
+      margin-top: 2.5rem;
+      padding: 1.8rem 2rem;
+      background: var(--lavender-dark);
+      color: white;
+      border-radius: 16px;
+      text-align: center;
+    }
+    .consult-cta p {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+      line-height: 1.6;
+      color: white;
+    }
+    .consult-cta a {
+      background: white;
+      color: var(--lavender-dark);
+      border-radius: 100px;
+      padding: 0.6rem 1.5rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+    .consult-cta a:hover { opacity: 0.85; }
+
+    /* ===== SERVICES ===== */
+    #services {
+      background: var(--cream);
+      padding: 100px 2rem 80px;
+    }
+    #services.active { display: block; }
+
+    .services-inner { max-width: 1100px; margin: 0 auto; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--border);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(107,94,168,0.1);
+    }
+    .service-icon {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+    .service-card p {
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+    }
+    .service-accent {
+      width: 30px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--lavender-dark), var(--blue));
+      border-radius: 2px;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ===== FAQS ===== */
+    #faqs {
+      background: var(--white);
+      padding: 100px 2rem 80px;
+    }
+    #faqs.active { display: block; }
+
+    .faqs-inner { max-width: 850px; margin: 0 auto; }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .faq-card {
+      background: linear-gradient(135deg, var(--lavender-light) 0%, var(--blue-light) 100%);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--border);
+    }
+    .faq-card .service-icon { font-size: 1.8rem; }
+    .faq-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    .faq-card p {
+      font-size: 0.9rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+    }
+
+    /* ===== CONTACT ===== */
+    #contact {
+      background: linear-gradient(160deg, var(--lavender-light) 0%, var(--blue-light) 60%, var(--cream) 100%);
+      padding: 100px 2rem 80px;
+    }
+    #contact.active { display: block; }
+
+    .contact-inner { max-width: 800px; margin: 0 auto; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+      margin-top: 1rem;
+    }
+    .contact-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      margin-bottom: 1.4rem;
+    }
+    .contact-item-icon {
+      width: 36px; height: 36px;
+      min-width: 36px;
+      background: var(--lavender-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.85rem;
+    }
+    .contact-item-text {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .contact-item-text strong {
+      display: block;
+      color: var(--text-dark);
+      font-weight: 400;
+      margin-bottom: 0.1rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .contact-item-text a {
+      color: var(--lavender-dark);
+      text-decoration: none;
+    }
+    .contact-item-text a:hover { text-decoration: underline; }
+
+    .contact-form {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+    }
+    .contact-form h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.4rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--text-dark);
+      background: var(--cream);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--lavender-mid);
+    }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-submit {
+      width: 100%;
+      background: var(--lavender-dark);
+      color: white;
+      border: none;
+      padding: 0.9rem;
+      border-radius: 10px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .form-submit:hover { background: var(--lavender); }
+
+    .license-block {
+      margin-top: 2.5rem;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.6);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text-dark);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+    footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .about-grid,
+      .services-grid,
+      .faq-grid,
+      .contact-grid { grid-template-columns: 1fr; }
+      .home-title { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('home')">Helena <span>Nyhart</span></a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')">Home</a></li>
+    <li><a href="#" onclick="showPage('about')">About</a></li>
+    <li><a href="#" onclick="showPage('services')">Services</a></li>
+    <li><a href="#" onclick="showPage('faqs')">FAQs</a></li>
+    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="active">
+  <div class="home-blob blob1"></div>
+  <div class="home-blob blob2"></div>
+  <div class="home-badge">Virtual &amp; In-Person · California</div>
+  <h1 class="home-title">A space to <em>heal,</em><br>grow &amp; be heard.</h1>
+  <p class="home-sub">Therapy for adults, adolescents &amp; couples — offered with warmth, curiosity, and genuine care for your wellbeing.</p>
+  <div class="btn-group">
+    <a class="btn-primary" href="#" onclick="showPage('contact')">Free Consultation</a>
+    <a class="btn-secondary" href="#" onclick="showPage('services')">Explore Services</a>
+  </div>
+  <div class="home-pills">
+    <span class="pill">CBT &amp; DBT</span>
+    <span class="pill">Attachment Theory</span>
+    <span class="pill">Couples Therapy</span>
+    <span class="pill">Adolescents</span>
+    <span class="pill">Telehealth</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <span class="section-eyebrow">About Me</span>
+    <h2 class="section-title">Helena Nyhart,<br>AMFT &amp; APCC</h2>
+    <div class="title-line"></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I am an Associate Marriage and Family Therapist (AMFT) and Associate Professional Clinical Counselor (APCC) providing virtual therapy to adults, couples and adolescents across California. I hold a Bachelor's degree in Communication and Women &amp; Gender Studies from Santa Clara University and a Master's in Clinical Psychology from Antioch University, Los Angeles.</p>
+        <p>My clinical training was completed at the Southern California Counseling Center, where I worked with individuals from diverse backgrounds and life experiences. Currently, I work as a primary therapist at a residential treatment center for adolescents, supporting young people through some of the most formative and challenging periods of their lives.</p>
+        <p>I believe that the therapeutic relationship itself is a catalyst for healing. My integrative style is tailored to each individual's goals, drawing on evidence-based practices such as CBT, DBT and Attachment Theory to meet your unique needs.</p>
+        <p>My approach is warm, collaborative, and grounded in curiosity and empathy. I will support you in exploring relational patterns, processing past experiences, and moving toward a life of greater self-awareness and emotional resilience.</p>
+      </div>
+      <div>
+        <div class="about-card">
+          <h3>Education &amp; Training</h3>
+          <div class="cred-item">
+            <span class="cred-dot"></span>
+            <span>M.A. Clinical Psychology — Antioch University, Los Angeles</span>
+          </div>
+          <div class="cred-item">
+            <span class="cred-dot"></span>
+            <span>B.A. Communication &amp; Women's &amp; Gender Studies — Santa Clara University</span>
+          </div>
+          <div class="cred-item">
+            <span class="cred-dot"></span>
+            <span>Clinical Training — Southern California Counseling Center</span>
+          </div>
+          <div class="cred-item">
+            <span class="cred-dot"></span>
+            <span>AMFT #152204 | APCC #18476</span>
+          </div>
+          <div style="margin-top:1.5rem;">
+            <h3>Therapeutic Approach</h3>
+            <div class="approach-tags">
+              <span class="tag">CBT</span>
+              <span class="tag">DBT</span>
+              <span class="tag">Attachment Theory</span>
+              <span class="tag">EFT</span>
+              <span class="tag">Gottman Method</span>
+              <span class="tag">Psychodynamic</span>
+            </div>
+          </div>
+        </div>
+        <div class="consult-cta">
+          <p>Ready to take the first step? I offer a free 15-minute consultation call.</p>
+          <a href="#" onclick="showPage('contact')">Book a Consultation</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-inner">
+    <span class="section-eyebrow">What I Offer</span>
+    <h2 class="section-title">Services</h2>
+    <div class="title-line"></div>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-icon">🌿</span>
+        <div class="service-accent"></div>
+        <h3>Individual Therapy</h3>
+        <p>Together we explore your story and identify your unique challenges, patterns of behaviors, past trauma and personal strengths. I utilize an integrative approach, drawing from a variety of theories including psychodynamic therapy, CBT, DBT and attachment theory to tailor treatment to best fit your needs. We work on building insight, developing coping tools, and moving toward a more meaningful and fulfilling life.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🌸</span>
+        <div class="service-accent"></div>
+        <h3>Adolescents</h3>
+        <p>I work with adolescents ages 13 to 18 years old experiencing challenges in school, at home or with peers. I offer an empathetic and nonjudgemental space for tweens and teens to explore topics related to identity, confidence, values and goals. I am an affirming therapist and work with all of my clients to create a space of self-discovery, reflection and acceptance.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">💜</span>
+        <div class="service-accent"></div>
+        <h3>Couples</h3>
+        <p>As with individual therapy I work with my client, the couple, to identify goals and growth areas. Using a blend of Emotionally Focused Therapy, principles of Gottman Method, family systems and attachment theory we'll explore the emotional patterns and attachment needs that shape your relationship. Together, we'll build tools to deepen trust, repair disconnection, and support a more secure and fulfilling partnership.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQS -->
+<section id="faqs">
+  <div class="faqs-inner">
+    <span class="section-eyebrow">Common Questions</span>
+    <h2 class="section-title">FAQs</h2>
+    <div class="title-line"></div>
+    <div class="faq-grid">
+      <div class="faq-card">
+        <span class="service-icon">🌾</span>
+        <h3>Fees &amp; Insurance</h3>
+        <p>
+          <strong style="color:var(--text-dark);font-weight:500;">Individual Sessions:</strong> $175 / 50 minutes<br>
+          <strong style="color:var(--text-dark);font-weight:500;">Couples &amp; Family:</strong> $200 / 60 minutes<br><br>
+          I do not take insurance. If you have out-of-network coverage, you can request a monthly super bill for reimbursement from your insurance.
+        </p>
+      </div>
+      <div class="faq-card">
+        <span class="service-icon">🌺</span>
+        <h3>Cancellation Policy</h3>
+        <p>Please provide at least 48 hours' notice for any cancellations or rescheduling. Appointments canceled with less than 48 hours' notice will result in a cancellation fee of the full rate.</p>
+      </div>
+      <div class="faq-card">
+        <span class="service-icon">🌿</span>
+        <h3>What Are the First Steps?</h3>
+        <p>The first step is a brief consultation call. If we mutually decide to move forward and work together I will send over intake forms and begin the process of scheduling a weekly session. The first session will be focused on obtaining a personal history and discussing your goals from therapy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <span class="section-eyebrow">Get In Touch</span>
+    <h2 class="section-title">Let's Connect</h2>
+    <div class="title-line"></div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Reach Out</h3>
+        <div class="contact-item">
+          <div class="contact-item-icon">✉</div>
+          <div class="contact-item-text">
+            <strong>Email</strong>
+            <a href="/cdn-cgi/l/email-protection#d6beb3bab3b8b7f8b3bbb4b9b2bfb3b2a1b3babab8b3a5a596b1bbb7bfbaf8b5b9bb"><span class="__cf_email__" data-cfemail="4129242d242f206f242c232e2528242536242d2d2f24323201262c20282d6f222e2c">[email&#160;protected]</span></a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📞</div>
+          <div class="contact-item-text">
+            <strong>Phone</strong>
+            <a href="tel:5625769861">(562) 576-9861</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div class="contact-item-text">
+            <strong>Office</strong>
+            2001 S. Barrington Ave #215<br>Los Angeles, CA 90025
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">🔗</div>
+          <div class="contact-item-text">
+            <strong>Psychology Today</strong>
+            <a href="https://www.psychologytoday.com/profile/1401328" target="_blank">View Profile</a>
+          </div>
+        </div>
+        <div class="license-block">
+          Helena Nyhart, AMFT #152204 · APCC #18476<br>
+          Supervised by Lauren Dummit, LMFT #46420<br>
+          Embodied Wellness Therapy
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3>Send a Message</h3>
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Jane Smith" />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="jane@example.com" />
+        </div>
+        <div class="form-group">
+          <label>What brings you here?</label>
+          <textarea placeholder="Tell me a little about what you're looking for..."></textarea>
+        </div>
+        <button class="form-submit">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Helena Nyhart, AMFT · APCC &nbsp;|&nbsp; Los Angeles, CA &nbsp;|&nbsp; <a href="/cdn-cgi/l/email-protection#dbb3beb7beb5baf5beb6b9b4bfb2bebfacbeb7b7b5bea8a89bbcb6bab2b7f5b8b4b6"><span class="__cf_email__" data-cfemail="3d55585158535c1358505f52595458594a58515153584e4e7d5a505c5451135e5250">[email&#160;protected]</span></a></p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function showPage(id) {
+    document.querySelec
